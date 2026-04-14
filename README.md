@@ -1,40 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# SaaS — Business Idea Generator
 
-## Getting Started
+Full-stack app from Week 1 production: [Next.js](https://nextjs.org) **Pages Router** (TypeScript, ESLint, Tailwind) with a **FastAPI** backend under `api/`, deployed on [Vercel](https://vercel.com).
 
-First, run the development server:
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- A [Vercel](https://vercel.com) account
+- An OpenAI or OpenRouter API key (for the Python API)
+- [Vercel CLI](https://vercel.com/docs/cli): `npm install -g vercel`, then `vercel login`
+
+## Create the project (Pages Router)
+
+From the directory where you want the folder `saas` to appear, run:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx create-next-app saas --typescript --eslint --tailwind --no-src-dir --no-app --no-agents-md --no-react-compiler --no-import-alias
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This scaffolds **Pages Router** (`--no-app`), TypeScript, ESLint, Tailwind, files at the project root (no `src/`), and no custom import alias.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Then open the `saas` folder in your editor. Typical layout:
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- `pages/` — routes and `_app.tsx` / `_document.tsx`
+- `styles/globals.css` — global styles (including Tailwind)
+- `public/` — static assets
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+If you use a **Python FastAPI** backend at `/api`, delete the sample Next.js route handlers so they do not conflict: remove the `pages/api` folder. Add `api/` at the repo root with `requirements.txt` and your FastAPI app (`api/index.py`).
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Local development
 
-## Learn More
+```bash
+cd saas
+npm install
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000). The course often validates the **deployed** preview so the Next.js frontend and Python backend match production routing.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Link the directory** (once per clone or machine):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+   ```bash
+   cd saas
+   vercel link
+   ```
+
+   Answer the prompts: set up and link → your scope → **no** to linking an existing project (first time) → project name (for example `saas`) → code location = current directory (press Enter).
+
+2. **Add the OpenAI key** (required for the sample API):
+
+   ```bash
+   vercel env add OPENAI_API_KEY
+   ```
+
+   Paste the key and select all environments (development, preview, production) when asked. 
+   
+   **NB:** Even though keys are sensitive, do not indicate they are sensitive when adding to Vercel's secret manager, else the key addition will fail.
+
+3. **Preview deploy**:
+
+   ```bash
+   vercel .
+   ```
+
+   If you already ran `vercel link`, choose **no** when asked to set up a new project again.
+
+4. **Production**:
+
+   ```bash
+   vercel --prod
+   ```
+
+   Use the printed URL to open the live app.

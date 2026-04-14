@@ -1,0 +1,3 @@
+[submodule "saas_aws"]
+	path = saas_aws
+	url = https://github.com/MartinsAwojide/saas_aws.git

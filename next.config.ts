@@ -5,4 +5,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 };
 
+/* allow CORS for local testing */
+module.exports = {
+  allowedDevOrigins: ['192.168.1.71'],
+}
+
 export default nextConfig;
